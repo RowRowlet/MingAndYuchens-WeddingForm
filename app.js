@@ -54,10 +54,9 @@ createApp({
             // 如果選「無法參加」，直接跳到第 7 步（留言）
             if (formData.value.attendance === 'no' && currentStep.value === 3) {
                 currentStep.value = 7;
+                return;
             }
-            if (formData.value.attendance === 'no' && currentStep.value === 7) {
-                currentStep.value = 8;
-            }
+            
 
             } else {
             // 5️⃣ 最後一步提交
