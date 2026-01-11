@@ -6,6 +6,7 @@ createApp({
         const totalSteps = 9;
         const isSubmitted = ref(false);
         const isMobile = ref(window.innerWidth < 768);
+        const isSubmitting = ref(false); // 提交狀態
 
         const formData = ref({
             name: '',
@@ -36,12 +37,31 @@ createApp({
         });
 
         const nextStep = () => {
-            if (currentStep.value === 0) {
+            // 1️⃣ 檢查第 1 步必填項（姓名）
+            if (currentStep.value === 1 && !formData.value.name.trim()) {
+                return;
+            }
+            // 2️⃣ 檢查第 2 步必填項（參加狀況）
+            if (currentStep.value === 2 && !formData.value.attendance) {
+                return;
+            }
+
+            // 3️⃣ 進入下一步
+            if (currentStep.value < totalSteps - 1) {
                 currentStep.value++;
-            } else if (currentStep.value < totalSteps - 1) {
-                currentStep.value++;
+        
+            // 4️⃣ 只在第 3 步之後才進行跳過邏輯
+            // 如果選「無法參加」，直接跳到第 7 步（留言）
+            if (formData.value.attendance === 'no' && currentStep.value === 3) {
+                currentStep.value = 7;
+            }
+            if (formData.value.attendance === 'no' && currentStep.value === 7) {
+                currentStep.value = 8;
+            }
+
             } else {
-                handleSubmit();
+            // 5️⃣ 最後一步提交
+            handleSubmit();
             }
         };
 
@@ -72,9 +92,34 @@ createApp({
             }
         };
 
-        const handleSubmit = () => {
+        const handleSubmit = async () => {
             console.log('提交數據:', formData.value);
-            isSubmitted.value = true;
+            isSubmitting.value = true;
+
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxUHi400qm99m80xaLTgXE90XpN3SgJObaE3KT-s40WoaO38G1s063IBT4QCL9rB-jw/exec'; // 貼你的部署 URL
+            const payload = new FormData();
+            payload.append('name', formData.value.name);
+            payload.append('attendance', formData.value.attendance);
+            payload.append('guests', formData.value.guests);
+            payload.append('dietary', formData.value.dietary.join(', '));
+            payload.append('chineseCookie', formData.value.chineseCookie.join(', '));
+            payload.append('song', formData.value.song);
+            payload.append('message', formData.value.message);
+            
+            try {
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    body: payload,
+                    mode: 'no-cors'
+                });
+                console.log('提交成功');
+                isSubmitted.value = true;
+            } catch(error) {
+                console.error('提交失敗:', error);
+                alert('提交失敗，請稍後重試');
+            } finally{
+                isSubmitting.value = false;
+            }
         };
 
         const restartForm = () => {
@@ -105,7 +150,7 @@ createApp({
             currentStep, totalSteps, formData, isSubmitted, 
             progressPercentage, nextStep, prevStep, selectAttendance,
             dietaryOptions, chineseCookieOptions, toggleDietary, toggleCookie, 
-            handleSubmit, restartForm, isMobile, getSelectedLabel
+            handleSubmit, restartForm, isMobile, getSelectedLabel,isSubmitting
         };
     }
 }).mount('#app');
