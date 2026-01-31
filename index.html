@@ -300,12 +300,12 @@
             margin: 20px 0;
         }
         .Welocome {
-            max-width: 320px; /* 歡迎頁圖放稍大一點 */
-            width: 90%;
-            height: auto;
-            /* 淡淡的淡入效果 */
-            animation: fadeInSlide 1s ease-out;
-        }
+    max-width: 450px; /* 增加寬度讓照片中的名字清楚可見 */
+    width: 90%;
+    height: auto;
+    border-radius: 8px; /* 稍微圓角化增加柔和感 */
+    animation: fadeInSlide 1s ease-out;
+}
 
 .btn-start {
     background-color: var(--accent-color, #000);
@@ -456,19 +456,19 @@
                     <div class="illustration-container">
                         <img src="./src/cat_glassCheers.png" alt="Cheers Cats" class="cheers-cats">
                     </div>
-                    <h2>感謝您的回覆！到時候見!</h2>
+                    <h2>{{ formData.attendance === 'yes' ? '感謝您的回覆！到時候見!' : '太可惜了!謝謝你的回覆!' }}</h2>
                     <button class="btn-ok" style="margin-top: 30px; margin: 30px auto;" @click="restartForm">重新填寫</button>
                 </div>
 
                 <div v-else-if="currentStep === 0" :key="'welcome'" class="step-container welcome-screen">
                     <div class="illustration-container">
-                        <img src="./src/walking.png" alt="Welocome" class="Welocome">
+                        <img src="./src/photoName.png" alt="Welcome Photo" class="Welocome">
                     </div>
-                        <h1>Ming & Yuchen's Special Day</h1>
-                        <p class="welcome-text">誠摯邀請您來我們的婚禮小派對!<br>請花一點時間填寫這份出席意願表單。</p>
-                        <button class="btn-start" @click="nextStep">開始填寫 ↵</button>
-                        <div class="press-enter">press <b>Enter ↵</b></div>
-                    </div>
+                    <h1>Ming & Yuchen's Special Day</h1>
+                    <p class="welcome-text">誠摯邀請您來我們的婚禮小派對!<br>請花一點時間填寫這份出席意願表單。</p>
+                    <button class="btn-start" @click="nextStep">開始填寫 ↵</button>
+                    <div class="press-enter">press <b>Enter ↵</b></div>
+                </div>
 
                 <div v-else :key="currentStep" class="step-container">
                     <div class="step-number">
