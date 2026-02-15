@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>婚禮邀請函 | RSVP</title>
+    <title>5/30 婚禮邀請函 | RSVP</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23EEA9A9" d="M378.9 80c-27.3 0-53 13.1-69 35.2l-34.4 47.6c-4.5 6.2-11.7 9.9-19.4 9.9s-14.9-3.7-19.4-9.9l-34.4-47.6c-16-22.1-41.7-35.2-69-35.2-47 0-85.1 38.1-85.1 85.1 0 49.9 32 98.4 68.1 142.3 41.1 50 91.4 94 125.9 120.3 3.2 2.4 7.9 4.2 14 4.2s10.8-1.8 14-4.2c34.5-26.3 84.8-70.4 125.9-120.3 36.2-43.9 68.1-92.4 68.1-142.3 0-47-38.1-85.1-85.1-85.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 68.6-42.9 128.9-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.3 9.4-27.5 14.1-43.1 14.1s-30.8-4.7-43.1-14.1C176.4 438 123.2 391.5 79.1 338 42.9 294.1 0 233.7 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z"/></svg>'>
     <style>
         :root {
             --primary-color: #3e3a31;    /* 調深一點的文字顏色，更配紙張感 */
@@ -22,7 +23,7 @@
 
         body {
             background-color: var(--bg-color);
-            background-image: url("./natural-paper.png");
+            background-image: url("./src/natural-paper.png");
             /* 背景固定，不隨頁面切換滾動，維持紋理一致性 */    
             background-attachment: fixed;     
             color: var(--primary-color);    
@@ -61,19 +62,22 @@
     
             /* 核心調整：讓貓咪腳下的影子剛好踩在條上 */
             /* 如果覺得太高或太低，請微調這個數值 */
-            bottom: -5px; 
+            bottom: -15px; 
     
             width: 80px;   /* 調整貓咪大小 */
             height: 80px;
     
-            /* 插入您的 GIF */
-            background-image: url('./1PwK.gif');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: bottom center;
-    
             pointer-events: none;
             z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cat-runner img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         /* 確保進度條容器不會切掉貓咪的頭 */
         .progress-container {
@@ -135,8 +139,8 @@
         .slide-up-enter-active, .slide-up-leave-active {
             transition: all 0.5s ease;
         }
-        .slide-up-enter-from { opacity: 0; transform: translateY(50px); }
-        .slide-up-leave-to { opacity: 0; transform: translateY(-50px); }
+        .slide-up-enter-from { opacity: 0;}
+        .slide-up-leave-to { opacity: 0;}
 
         .step-number {
             font-size: 16px;
@@ -149,16 +153,27 @@
         .step-number span { margin-right: 8px; }
 
         h2 {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 400;
-            margin-bottom: 24px;
+            margin-bottom: 15px;
             line-height: 1.2;
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        h3 {
+            font-size: 20px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
         }
 
         /* 輸入框樣式 */
         .input-field {
             width: 100%;
-            font-size: 28px;
+            font-size: 20px;
             padding: 10px 0;
             border: none;
             border-bottom: 2px dashed #8d7a52; /* 用虛線呼應手繪風 */
@@ -221,6 +236,7 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            z-index: 100;
         }
 
         .btn-ok {
@@ -275,7 +291,6 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
         }
         /* 歡迎頁專屬樣式 */
         .welcome-screen {
@@ -291,11 +306,11 @@
             line-height: 1.6;
             margin: 20px 0;
         }
-        .cheers-cats.main-hero {
-    max-width: 320px; /* 歡迎頁圖放稍大一點 */
+        .Welocome {
+    max-width: 450px; /* 增加寬度讓照片中的名字清楚可見 */
     width: 90%;
     height: auto;
-    /* 淡淡的淡入效果 */
+    border-radius: 8px; /* 稍微圓角化增加柔和感 */
     animation: fadeInSlide 1s ease-out;
 }
 
@@ -388,38 +403,81 @@
             flex: 1;
             margin-left: 16px;
         }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            text-align: center;
+        }
+        /* GIF 樣式設定 */
+        .loading-gif {
+            width: 80px;  /* 根據需求調整大小 */
+            height: 80px;
+            margin-bottom: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* 文字樣式 */
+        .loading-spinner p {
+            font-family:  sans-serif; /* 若有手寫體字型可加上 */
+            color: #9E7A7A;
+            font-size: 16px;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <div class="progress-container">
             <div class="progress-fill" :style="{ width: progressPercentage + '%' }">
-                <div class="cat-runner"></div>
+                <div class="cat-runner">
+                    <img src="./src/1PwK.gif" alt="Running Cat" />
+                </div>
+            </div>
+        </div>
+        <!-- 載入遮罩 -->
+        <div v-if="isSubmitting" class="loading-overlay">
+            <div class="loading-spinner">
+                <img :src="'./src/heart.gif?t=' + Date.now()" alt="loading" class="loading-gif">
+                <!-- <div class="spinner"></div> -->
+                <p>- =͟͟͞͞ =͟͟͞͞ ✉ 傳送中...</p>
             </div>
         </div>
 
         <div class="content-wrapper">
-            <img src="./right_start.png" class="fixed-bg-decoration-right" alt="decoration">
-            <img src="./twoStars.png" class="fixed-bg-decoration-left" alt="decoration">
+            <img src="./src/right_start.png" class="fixed-bg-decoration-right" alt="decoration">
+            <img src="./src/twoStars.png" class="fixed-bg-decoration-left" alt="decoration">
 
             <transition name="slide-up" mode="out-in">
                 <div v-if="isSubmitted" :key="'success'" class="success-screen">
                     <div class="illustration-container">
-                        <img src="./cat_glassCheers.png" alt="Cheers Cats" class="cheers-cats">
+                        <img src="./src/cat_glassCheers.png" alt="Cheers Cats" class="cheers-cats">
                     </div>
-                    <h2>感謝您的回覆！到時候見!</h2>
+                    <h2>{{ formData.attendance === 'yes' ? '感謝您的回覆！到時候見!' : '太可惜了!謝謝你的回覆!' }}</h2>
                     <button class="btn-ok" style="margin-top: 30px; margin: 30px auto;" @click="restartForm">重新填寫</button>
                 </div>
 
                 <div v-else-if="currentStep === 0" :key="'welcome'" class="step-container welcome-screen">
                     <div class="illustration-container">
-                        <img src="./cat_glassCheers.png" alt="Cheers" class="cheers-cats main-hero">
+                        <img src="./src/photoName.png" alt="Welcome Photo" class="Welocome">
                     </div>
-                        <h1>Ming & Yuchen's Special Day</h1>
-                        <p class="welcome-text">誠摯邀請您參與我們的婚禮<br>請花一點時間填寫這份出席意願表單。</p>
-                        <button class="btn-start" @click="nextStep">開始填寫 ↵</button>
-                        <div class="press-enter">press <b>Enter ↵</b></div>
-                    </div>
+                    <h1>Ming & Yuchen's Special Day</h1>
+                    <p class="welcome-text">誠摯邀請您來我們的婚禮小派對!<br>請花一點時間填寫這份出席意願表單。</p>
+                    <button class="btn-start" @click="nextStep">開始填寫 ↵</button>
+                    <div class="press-enter">press <b>Enter ↵</b></div>
+                </div>
 
                 <div v-else :key="currentStep" class="step-container">
                     <div class="step-number">
@@ -427,12 +485,12 @@
                     </div>
 
                     <div v-if="currentStep === 1">
-                        <h2>你好，請問你是誰？*</h2>
-                        <input type="text" class="input-field" v-model="formData.name" placeholder="請輸入您的姓名..." @keyup.enter="nextStep" autofocus>
+                        <h2>你好，請問你是誰？</h2>
+                        <input type="text" name ="姓名" class="input-field" v-model="formData.name" placeholder="請輸入您的姓名..." @keyup.enter="nextStep" autofocus>
                     </div>
 
                     <div v-if="currentStep === 2">
-                        <h2>5/30 要來一起吃頓午餐嗎？*</h2>
+                        <h2>5/30 要來一起吃頓午餐嗎？</h2>
                         <div class="options-list">
                             <div class="option-item" :class="{ selected: formData.attendance === 'yes' }" @click="selectAttendance('yes')">
                                 <span>A. 我很樂意參加</span>
@@ -447,10 +505,29 @@
 
                     <div v-if="currentStep === 3 && formData.attendance === 'yes'">
                         <h2>和你同行的人有幾位？</h2>
-                        <input type="number" class="input-field" v-model.number="formData.guests" min="1" max="5" @keyup.enter="nextStep">
+                        <input type="number" name="同行人數" class="input-field" v-model.number="formData.guests" min="1" max="5" @keyup.enter="nextStep">
                     </div>
 
-                    <div v-if="currentStep === 4 && formData.attendance === 'yes'">
+                    <div v-if="currentStep === 4">
+                        <h2>需要我們寄喜帖給你嗎？</h2>
+                        <div class="options-list">
+                            <div class="option-item" :class="{ selected: formData.wantsInvitation === 'yes' }" @click="formData.wantsInvitation = 'yes'; setTimeout(nextStep, 300)">
+                                <span>A. 需要，請寄給我</span>
+                                <span class="key-hint">A</span>
+                            </div>
+                            <div class="option-item" :class="{ selected: formData.wantsInvitation === 'no' }" @click="formData.wantsInvitation = 'no'; setTimeout(nextStep, 300)">
+                                <span>B. 不用了，謝謝</span>
+                                <span class="key-hint">B</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="currentStep === 5 && formData.wantsInvitation === 'yes'">
+                        <h2>請告訴我們你的地址：</h2>
+                        <input type="text" name="地址" class="input-field" v-model="formData.address" placeholder="請輸入完整地址..." @keyup.enter="nextStep">
+                    </div>
+
+                    <div v-if="currentStep === 6 && formData.attendance === 'yes'">
                         <h2>有飲食上的特殊要求嗎？</h2>
                         <div class="options-list">
                             <div v-for="(opt, idx) in dietaryOptions" :key="idx" 
@@ -463,8 +540,9 @@
                         </div>
                     </div>
 
-                    <div v-if="currentStep === 5 && formData.attendance === 'yes'">
+                    <div v-if="currentStep === 7 && formData.attendance === 'yes'">
                         <h2>如果要吃中式大餅，你會選什麼口味？</h2>
+                        <h3>(單純口味票選!只做為參考而已喔!)</h3>
                         <div class="options-list">
                             <div v-for="(opt, idx) in chineseCookieOptions" :key="idx" 
                                  class="option-item" 
@@ -476,19 +554,18 @@
                         </div>
                     </div>
 
-                    <div v-if="currentStep === 6 && formData.attendance === 'yes'">
+                    <div v-if="currentStep === 8 && formData.attendance === 'yes'">
                         <h2>寫下一首最愛的歌，或是最近常聽的歌：</h2>
-                        <input type="text" class="input-field" v-model="formData.song" placeholder="請給我一首歌的名字..." @keyup.enter="nextStep">
+                        <input type="text" name="歌" class="input-field" v-model="formData.song" placeholder="請給我一首歌的名字..." @keyup.enter="nextStep">
                     </div>
 
-                    <div v-if="currentStep === 7">
+                    <div v-if="currentStep === 9">
                         <h2>有沒有其他想說的話：</h2>
-                        <h3>(或在這裡嘗試SQL Injection)</h3>
-                        <input type="text" class="input-field" v-model="formData.message" placeholder="❤..." @keyup.enter="nextStep">
+                        <input type="text" name="留言" class="input-field" v-model="formData.message" placeholder="說點什麼..." @keyup.enter="nextStep">
                     </div>
 
-                    <div v-if="currentStep === 8" class="summary-screen">
-                        <h2>✨ 確認您的回答 ✨</h2>
+                    <div v-if="currentStep === 10" class="summary-screen">
+                        <h2> ✧  確認您的回答  ✧</h2>
                         <div class="summary-content">
                             <div class="summary-item">
                                 <span class="summary-label">你是：</span>
@@ -511,12 +588,20 @@
                                 <span class="summary-value">{{ getSelectedLabel(formData.chineseCookie, chineseCookieOptions) || '未選擇' }}</span>
                             </div>
                             <div class="summary-item">
-                                <span class="summary-label">最愛的歌：</span>
+                                <span class="summary-label">推推的歌：</span>
                                 <span class="summary-value">{{ formData.song || '—' }}</span>
                             </div>
                             <div v-if="formData.message" class="summary-item">
                                 <span class="summary-label">想說的話：</span>
                                 <span class="summary-value">{{ formData.message }}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">寄送喜帖：</span>
+                                <span class="summary-value">{{ formData.wantsInvitation === 'yes' ? '需要' : '不需要' }}</span>
+                            </div>
+                            <div v-if="formData.wantsInvitation === 'yes'" class="summary-item">
+                                <span class="summary-label">寄送地址：</span>
+                                <span class="summary-value">{{ formData.address }}</span>
                             </div>
                         </div>
                         <p style="margin-top: 20px; font-size: 16px; color: var(--primary-color);">一切無誤？請提交回覆 ✓</p>
