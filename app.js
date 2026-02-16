@@ -3,7 +3,7 @@ const { createApp, ref, computed, onMounted } = Vue;
 createApp({
     setup() {
         const currentStep = ref(0);
-        const totalSteps = 9;
+        const totalSteps = 11;
         const isSubmitted = ref(false);
         const isMobile = ref(window.innerWidth < 768);
         const isSubmitting = ref(false); // 提交狀態
@@ -12,10 +12,13 @@ createApp({
             name: '',
             attendance: '',
             guests: 1,
+            companions: '',
             dietary: [],
             chineseCookie:[],
             song: '',
             message:'',
+            wantsInvitation: '',
+            address: '',
         });
 
         const dietaryOptions = [
@@ -49,15 +52,12 @@ createApp({
             // 3️⃣ 進入下一步
             if (currentStep.value < totalSteps - 1) {
                 currentStep.value++;
-        
-            // 4️⃣ 只在第 3 步之後才進行跳過邏輯
-            // 如果選「無法參加」，直接跳到第 7 步（留言）
-            if (formData.value.attendance === 'no' && currentStep.value === 3) {
-                currentStep.value = 7;
-                return;
-            }
-            
-
+                
+                // 如果在第 4 步（喜帖）選「不需要」，直接跳到第 6 步（飲食）
+                if (currentStep.value === 5 && formData.value.wantsInvitation === 'no') {
+                    currentStep.value = 6;
+                    return;
+                }
             } else {
             // 5️⃣ 最後一步提交
             handleSubmit();
@@ -70,7 +70,12 @@ createApp({
 
         const selectAttendance = (val) => {
             formData.value.attendance = val;
-            setTimeout(nextStep, 300); // 選完自動跳下一步，Typeform 體驗
+            // 如果選「無法參加」，直接跳到第 10 步（留言）
+            if (val === 'no') {
+                currentStep.value = 10;
+            } else {
+                setTimeout(nextStep, 300); // 選完自動跳下一步，Typeform 體驗
+            }
         };
 
         const toggleDietary = (val) => {
@@ -91,25 +96,41 @@ createApp({
             }
         };
 
+        // 防止公式注入 (Formula Injection)
+        const sanitizeInput = (value) => {
+            if (typeof value !== 'string') return value;
+            // 如果以 =, +, -, @ 開頭，則在前面加上單引號逃逸
+            if (value.match(/^[=+\-@]/)) {
+                return "'" + value;
+            }
+            return value;
+        };
+
         const handleSubmit = async () => {
             console.log('提交數據:', formData.value);
             isSubmitting.value = true;
 
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxUHi400qm99m80xaLTgXE90XpN3SgJObaE3KT-s40WoaO38G1s063IBT4QCL9rB-jw/exec'; // 貼你的部署 URL
-            const payload = new FormData();
-            payload.append('name', formData.value.name);
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzR_gTpRpnwgXcfAk49vD6OcN8rPz6KV56zLmbneUaglCcSL_WRW2tOLGJinZ4Vq-2inw/exec'
+
+            const payload = new URLSearchParams();
+            payload.append('name', sanitizeInput(formData.value.name));
             payload.append('attendance', formData.value.attendance);
             payload.append('guests', formData.value.guests);
+            payload.append('companions', sanitizeInput(formData.value.companions));
             payload.append('dietary', formData.value.dietary.join(', '));
             payload.append('chineseCookie', formData.value.chineseCookie.join(', '));
-            payload.append('song', formData.value.song);
-            payload.append('message', formData.value.message);
+            payload.append('song', sanitizeInput(formData.value.song));
+            payload.append('message', sanitizeInput(formData.value.message));
+            payload.append('wantsInvitation', formData.value.wantsInvitation);
+            payload.append('address', sanitizeInput(formData.value.address));
             
             try {
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
                     body: payload,
-                    mode: 'no-cors'
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
                 });
                 console.log('提交成功');
                 isSubmitted.value = true;
@@ -124,7 +145,7 @@ createApp({
         const restartForm = () => {
             currentStep.value = 0;
             isSubmitted.value = false;
-            formData.value = { name: '', attendance: '', guests: 1, dietary: [], chineseCookie: [], song: '', message: '' };
+            formData.value = { name: '', attendance: '', guests: 1, companions: '', dietary: [], chineseCookie: [], song: '', message: '', wantsInvitation: '', address: '' };
         };
 
         // 監聽鍵盤快捷鍵
