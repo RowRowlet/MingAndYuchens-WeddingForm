@@ -125,7 +125,7 @@
         }
         /* 確保表單內容在裝飾圖上方 */
         .step-container, .success-screen {
-            z-index: 1;
+            z-index: 0;
         }
         .step-container {
             position: relative;
@@ -264,6 +264,7 @@
             left: 30px;
             display: flex;
             gap: 5px;
+            z-index: 50;
         }
 
         .nav-arrow {
@@ -277,9 +278,15 @@
             border-radius: 4px 0 0 4px;
             cursor: pointer;
             opacity: 0.8;
+            transition: all 0.2s;
         }
         .nav-arrow.next { border-radius: 0 4px 4px 0; border-left: 1px solid rgba(255,255,255,0.3); }
-        .nav-arrow:hover { opacity: 1; }
+        .nav-arrow:hover:not(.disabled) { opacity: 1; }
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
 
         .success-screen {
             text-align: center;
@@ -361,7 +368,7 @@
         /* 摘要頁面樣式 */
         .summary-screen {
             text-align: left;
-            margin-bottom: 120px;
+            margin-bottom: 20px;
         }
 
         .summary-screen h2 {
@@ -625,8 +632,8 @@
         </div>
 
         <div class="footer-nav" v-if="!isSubmitted">
-            <div class="nav-arrow" @click="prevStep" :style="{ opacity: currentStep === 0 ? 0.3 : 1 }">▲</div>
-            <div class="nav-arrow next" @click="nextStep" :style="{ opacity: currentStep === totalSteps - 1 ? 0.3 : 1 }">▼</div>
+            <div class="nav-arrow" @click="prevStep" :class="{ disabled: currentStep === 0 }">▲</div>
+            <div class="nav-arrow next" @click="nextStep" :class="{ disabled: currentStep === totalSteps - 1 }">▼</div>
         </div>
     </div>
 
