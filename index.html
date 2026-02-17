@@ -516,7 +516,7 @@
                     <div v-if="currentStep === 3 && formData.attendance === 'yes'">
                         <h2>和你同行的人有幾位？</h2>
                         <h3>(不含自己)</h3>
-                        <input type="number" name="同行人數" class="input-field" v-model.number="formData.guests" min="1" max="5" @keyup.enter="nextStep">
+                        <input type="number" name="同行人數" class="input-field" v-model.number="formData.guests" min="0" max="15" @keyup.enter="nextStep">
                     </div>
 
                     <div v-if="currentStep === 4">
