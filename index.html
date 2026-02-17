@@ -535,6 +535,7 @@
 
                     <div v-if="currentStep === 5 && formData.wantsInvitation === 'yes'">
                         <h2>請告訴我們你的地址：</h2>
+                        <h3>如果要電子喜帖請留E-mail</h3>
                         <input type="text" name="地址" class="input-field" v-model="formData.address" placeholder="請輸入完整地址..." @keyup.enter="nextStep">
                     </div>
 
